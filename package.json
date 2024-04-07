@@ -1,0 +1,53 @@
+{
+  "name": "storefront_backend_project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "lint": "eslint src/**/*.ts",
+    "prettier": "prettier --config .prettierrc \"src/**/*.ts\" --write",
+    "jasmine": "jasmine",
+    "build": "npx tsc",
+    "start": "npx tsc && nodemon src/server.ts",
+    "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess \"node ./dist/server.js\"",
+    "test": "set ENV=test&& db-migrate -e test up && npm run build && npm run jasmine && db-migrate -e test down && db-migrate -e test reset"
+  },
+  "author": "ahsin",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "db-migrate": "^0.11.14",
+    "db-migrate-pg": "^1.5.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "nodemon": "^3.1.0",
+    "pg": "^8.11.5",
+    "supertest": "^6.3.4",
+    "typescript": "^5.4.4"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jasmine": "^5.1.4",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/nodemon": "^1.19.6",
+    "@types/pg": "^8.11.4",
+    "@types/supertest": "^6.0.2",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
+    "eslint": "^8.8.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jasmine": "^5.1.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "jasmine-ts": "^0.4.0",
+    "prettier": "^2.5.1",
+    "ts-node": "^10.9.2",
+    "tsc-watch": "^6.2.0"
+  }
+}
