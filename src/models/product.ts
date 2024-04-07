@@ -103,23 +103,17 @@ async delete(id: string): Promise<Product> {
     }
 }
 
-async productCategory(cat: string): Promise<Product[]> {
+async getProductsByCategory(category: string): Promise<Product[]> {
     try {
-      // @ts-ignore
-      const conn = await client.connect()
-      const sql = 'SELECT * FROM products WHERE category=($1)'
-
-      const result = await conn.query(sql, [cat])
-
-      conn.release()
-
-      return result.rows 
+          // @ts-ignore
+        const conn = await client.connect();
+        const sql = 'SELECT * FROM products WHERE category = $1';
+        const result = await conn.query(sql, [category]);
+        conn.release();
+        return result.rows;
     } catch (err) {
-      throw new Error(`Could not get products of specified category. Error: ${err}`)
+        throw new Error(`Could not get products by category ${category}. Error: ${err}`);
     }
 }
-
-
-
 
 }

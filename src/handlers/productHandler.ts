@@ -76,6 +76,20 @@ const index = async (_req: Request, res: Response) => {
     }
   };
 
+  const getProductByCategory = async (req: Request, res: Response) => {
+    try {
+        const category = req.params.category;
+
+        // Call the appropriate method in your store/model to fetch products by category
+        const products = await store.getProductsByCategory(category);
+
+        res.json(products);
+    } catch (err) {
+        res.status(500).json({ error: err});
+    }
+};
+
+
 
   const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -112,6 +126,8 @@ const index = async (_req: Request, res: Response) => {
     app.get('/products/:id', verifyAuthToken, show);
     app.put('/products/:id', verifyAuthToken, update);
     app.delete('/products/:id', verifyAuthToken, deleteProduct);
+    app.get('/products/category/:category', verifyAuthToken, getProductByCategory);
+
   };
   
   export { productRoutes };
