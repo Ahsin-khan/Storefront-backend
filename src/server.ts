@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { usersRoutes } from './handlers/userHandler';
 import { productRoutes } from './handlers/productHandler';
+import { orderRoutes } from './handlers/orderHandler';
 
 const app: express.Application = express();
 const address: string = '0.0.0.0:5000';
@@ -24,6 +25,9 @@ usersRoutes(app);
 
 //Products Routes
 productRoutes(app)
+
+//Order Routes
+orderRoutes(app);
 
 
 app.listen(5000, function () {

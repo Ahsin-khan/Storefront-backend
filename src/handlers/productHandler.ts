@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import { NextFunction } from 'express';
 
 const store = new ProductStore();
-const token_secret = process.env.TOKEN_SECRET;
 
 const index = async (_req: Request, res: Response) => {
     try {
@@ -20,7 +19,6 @@ const index = async (_req: Request, res: Response) => {
   const create = async (req: Request, res: Response) => {
     try {
       const product: Product = {
-        id: parseInt(req.params.id),
         name: req.body.name,
         price: req.body.price,
         category: req.body.category
@@ -28,9 +26,9 @@ const index = async (_req: Request, res: Response) => {
   
       const newProduct = await store.create(product);  
       res.json(newProduct);
-    } catch (err) {
+    } catch (err: any) {
       res.status(401);
-      res.json(err);
+      res.json(err.message);
     }
   };
 
@@ -41,9 +39,9 @@ const index = async (_req: Request, res: Response) => {
     try {
       res.status(200);
       res.json(product);
-    } catch (err) {
+    } catch (err: any) {
       res.status(404);
-      res.json(err);
+      res.json(err.message);
     }
   };
 
@@ -59,9 +57,9 @@ const index = async (_req: Request, res: Response) => {
   
       const updatedProduct = await store.update(product);  
       res.json(updatedProduct);
-    } catch (err) {
+    } catch (err: any) {
       res.status(401);
-      res.json(err);
+      res.json(err.message);
     }
   };
 
@@ -70,9 +68,9 @@ const index = async (_req: Request, res: Response) => {
     try {
       const productDeleted = await store.delete(req.params.id);
       res.json(productDeleted);
-    } catch (err) {
+    } catch (err: any) {
       res.status(400);
-      res.json(err);
+      res.json(err.message);
     }
   };
 
@@ -84,9 +82,10 @@ const index = async (_req: Request, res: Response) => {
         const products = await store.getProductsByCategory(category);
 
         res.json(products);
-    } catch (err) {
-        res.status(500).json({ error: err});
-    }
+      } catch (err: any) {
+        res.status(400);
+        res.json(err.message);
+      }
 };
 
 

@@ -2,7 +2,7 @@
 import client from "../database";
 
 export type Product = {
-    id: number;
+    id?: number;
     name: string;
     price: number;
     category: string;
@@ -14,7 +14,7 @@ export class ProductStore {
         try {
           // @ts-ignore
           const conn = await client.connect()
-          const sql = 'SELECT * FROM products'
+          const sql = 'SELECT * FROM products ORDER BY id'
     
           const result = await conn.query(sql)
     
@@ -92,14 +92,14 @@ async delete(id: string): Promise<Product> {
 
   await conn.query(sql, [id]);
 
-  const sql2 = 'SELECT * FROM products';
+  const sql2 = 'SELECT * FROM products ORDER BY id';
   const result = await conn.query(sql2);
 
   conn.release()
 
   return result.rows;
 } catch (err) {
-        throw new Error(`Could not delete book ${id}. Error: ${err}`)
+        throw new Error(`Could not delete product ${id}. Error: ${err}`)
     }
 }
 
