@@ -80,10 +80,10 @@ export class UserStore {
       await conn.query(sql, [id]);
 
       const sql2 = 'SELECT * FROM users';
-      const result2 = await conn.query(sql2);
+      const result = await conn.query(sql2);
 
       conn.release();
-      return result2.rows;
+      return result.rows;
     } catch (err) {
       throw new Error(`Could not delete user with id: ${id}. Error: ${err}`);
     }

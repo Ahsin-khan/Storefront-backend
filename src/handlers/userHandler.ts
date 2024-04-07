@@ -85,7 +85,7 @@ const verifyAuthToken = (req: Request, res: Response, next: NextFunction) => {
     }
 
     // Verify the token
-    jwt.verify(token, process.env.TOKEN_SECRET as string, (err, decoded) => {
+    jwt.verify(token, process.env.TOKEN_SECRET as string, (err) => {
       if (err) {
         // JWT verification failed
         res.status(401).json('Invalid token');
