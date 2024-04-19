@@ -4,9 +4,9 @@ import bcrypt from 'bcrypt';
 
 export type User = {
   id?: number;
-  firstName: string;
-  lastName: string;
-  userName: string;
+  firstname: string;
+  lastname: string;
+  username: string;
   password: string;
 };
 
@@ -40,9 +40,9 @@ export class UserStore {
       const hash = bcrypt.hashSync(u.password + pepper, parseInt(saltRounds));
 
       const result = await conn.query(sql, [
-        u.firstName,
-        u.lastName,
-        u.userName,
+        u.firstname,
+        u.lastname,
+        u.username,
         hash
       ]);
 

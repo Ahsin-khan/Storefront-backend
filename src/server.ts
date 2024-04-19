@@ -4,9 +4,10 @@ import cors from 'cors';
 import { usersRoutes } from './handlers/userHandler';
 import { productRoutes } from './handlers/productHandler';
 import { orderRoutes } from './handlers/orderHandler';
+import dashboardRoutes from './handlers/dashboardHandler';
 
 const app: express.Application = express();
-const address: string = '0.0.0.0:5000';
+const address: string = '0.0.0.0:3000';
 
 const corsOptions = {
   origin: 'http://someotherdomain.com',
@@ -24,12 +25,14 @@ app.get('/', function (req: Request, res: Response) {
 usersRoutes(app);
 
 //Products Routes
-productRoutes(app)
+productRoutes(app);
 
 //Order Routes
 orderRoutes(app);
 
+//Dashboard Route
+dashboardRoutes(app);
 
-app.listen(5000, function () {
+app.listen(4000, function () {
   console.log(`starting app on: ${address}`);
 });
