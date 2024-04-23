@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error: Importing client for database connection
 import client from '../database';
 
 export type Product = {
@@ -11,7 +11,7 @@ export type Product = {
 export class ProductStore {
   async index(): Promise<Product[]> {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql = 'SELECT * FROM products ORDER BY id';
 
@@ -27,7 +27,7 @@ export class ProductStore {
 
   async create(p: Product): Promise<Product> {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql =
         'INSERT INTO products (name, price, category) VALUES ($1, $2, $3) RETURNING *';
@@ -47,7 +47,7 @@ export class ProductStore {
   async show(id: number): Promise<Product> {
     try {
       const sql = 'SELECT * FROM products WHERE id=$1';
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
 
       const result = await conn.query(sql, [id]);
@@ -66,17 +66,17 @@ export class ProductStore {
 
   async update(p: Product): Promise<Product> {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql =
         'UPDATE products SET name = $2, price = $3, category = $4 WHERE id = $1';
 
       await conn.query(sql, [p.id, p.name, p.price, p.category]);
-      const sql2 = 'SELECT * FROM products ORDER BY id';
-      const result = await conn.query(sql2);
+      const sql2 = 'SELECT * FROM products WHERE id = $1';
+      const result = await conn.query(sql2, [p.id]);
 
       conn.release();
-      return result.rows;
+      return result.rows[0];
     } catch (err) {
       throw new Error(
         `Could not update product with id:  ${p.id}. Error: ${err}`
@@ -86,9 +86,10 @@ export class ProductStore {
 
   async delete(id: string): Promise<Product> {
     try {
-      const sql = 'DELETE FROM products WHERE id=($1)';
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
+
+      const sql = 'DELETE FROM products WHERE id=($1)';
 
       await conn.query(sql, [id]);
 
@@ -105,7 +106,7 @@ export class ProductStore {
 
   async getProductsByCategory(category: string): Promise<Product[]> {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql = 'SELECT * FROM products WHERE category = $1';
       const result = await conn.query(sql, [category]);

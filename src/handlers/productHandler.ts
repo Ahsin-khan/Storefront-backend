@@ -10,8 +10,7 @@ const index = async (_req: Request, res: Response) => {
     const products = await store.index();
     res.json(products);
   } catch (error) {
-    res.status(404);
-    res.json(error);
+    res.status(404).json({ error: (error as Error).message });
   }
 };
 
@@ -25,21 +24,19 @@ const create = async (req: Request, res: Response) => {
 
     const newProduct = await store.create(product);
     res.json(newProduct);
-  } catch (err: any) {
-    res.status(401);
-    res.json(err.message);
+  } catch (error) {
+    res.status(401).json({ error: (error as Error).message });
   }
 };
 
 const show = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const product = await store.show(parseInt(id));
   try {
+    const product = await store.show(parseInt(id));
     res.status(200);
     res.json(product);
-  } catch (err: any) {
-    res.status(404);
-    res.json(err.message);
+  } catch (error) {
+    res.status(404).json({ error: (error as Error).message });
   }
 };
 
@@ -54,9 +51,8 @@ const update = async (req: Request, res: Response) => {
 
     const updatedProduct = await store.update(product);
     res.json(updatedProduct);
-  } catch (err: any) {
-    res.status(401);
-    res.json(err.message);
+  } catch (error) {
+    res.status(401).json({ error: (error as Error).message });
   }
 };
 
@@ -64,9 +60,8 @@ const deleteProduct = async (req: Request, res: Response) => {
   try {
     const productDeleted = await store.delete(req.params.id);
     res.json(productDeleted);
-  } catch (err: any) {
-    res.status(400);
-    res.json(err.message);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
   }
 };
 
@@ -78,9 +73,8 @@ const getProductByCategory = async (req: Request, res: Response) => {
     const products = await store.getProductsByCategory(category);
 
     res.json(products);
-  } catch (err: any) {
-    res.status(400);
-    res.json(err.message);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
   }
 };
 

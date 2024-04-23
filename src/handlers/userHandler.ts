@@ -10,9 +10,8 @@ const index = async (_req: Request, res: Response) => {
   try {
     const users = await store.index();
     res.json(users);
-  } catch (error: any) {
-    res.status(404);
-    res.json(error.message);
+  } catch (error) {
+    res.status(404).json({ error: (error as Error).message });
   }
 };
 
@@ -27,23 +26,20 @@ const create = async (req: Request, res: Response) => {
 
     const newUser = await store.create(user);
     const token = jwt.sign({ user: newUser }, token_secret as string);
-
     res.json({ newUser, token });
-  } catch (err: any) {
-    res.status(401);
-    res.json(err.message);
+  } catch (error) {
+    res.status(401).json({ error: (error as Error).message });
   }
 };
 
 const show = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const user = await store.show(parseInt(id));
   try {
+    const user = await store.show(parseInt(id));
     res.status(200);
     res.json(user);
-  } catch (err: any) {
-    res.status(404);
-    res.json(err.message);
+  } catch (error) {
+    res.status(404).json({ error: (error as Error).message });
   }
 };
 
@@ -51,9 +47,8 @@ const deleteUser = async (req: Request, res: Response) => {
   try {
     const userDeleted = await store.delete(req.params.id);
     res.json(userDeleted);
-  } catch (err: any) {
-    res.status(400);
-    res.json(err.message);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
   }
 };
 
@@ -64,9 +59,8 @@ const authenticate = async (req: Request, res: Response) => {
     const userAuth = await store.authenticate(userName, password);
     const token = jwt.sign({ user: userAuth }, token_secret as string);
     res.json(token);
-  } catch (err: any) {
-    res.status(401);
-    res.json(err.message);
+  } catch (error) {
+    res.status(401).json({ error: (error as Error).message });
   }
 };
 

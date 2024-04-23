@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error: Importing client for database connection
 import client from '../database';
 
 export type CurrentOrder = {
@@ -18,7 +18,7 @@ export class DashboardQueries {
   async usersCurrnetOrder(id: string): Promise<CurrentOrder[]> {
     try {
       const status: string = 'active';
-      //@ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql2 =
         'SELECT firstName, lastName, status, orders.id FROM users INNER JOIN orders ON users.id = orders.user_id WHERE orders.user_id = $1 AND status = $2;';
@@ -43,7 +43,7 @@ export class DashboardQueries {
   async usersCompletedOrder(id: string): Promise<CurrentOrder[]> {
     try {
       const status: string = 'complete';
-      //@ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql2 =
         'SELECT firstName, lastName, status, orders.id FROM users INNER JOIN orders ON users.id = orders.user_id WHERE orders.user_id = $1 AND status = $2;';

@@ -7,8 +7,8 @@ const index = async (_req: Request, res: Response) => {
   try {
     const orders = await store.index();
     res.json(orders);
-  } catch (error: any) {
-    res.json(error.message);
+  } catch (error) {
+    res.status(404).json({ error: (error as Error).message });
   }
 };
 
@@ -21,20 +21,19 @@ const create = async (req: Request, res: Response) => {
 
     const newOrder = await store.create(order);
     res.json({ newOrder });
-  } catch (err: any) {
-    res.status(401).json(err.message);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
 const show = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const order = await store.show(parseInt(id));
   try {
+    const order = await store.show(parseInt(id));
     res.status(200);
     res.json(order);
-  } catch (err: any) {
-    res.status(404);
-    res.json(err.message);
+  } catch (err) {
+    res.status(404).json({ error: (err as Error).message });
   }
 };
 
@@ -48,8 +47,8 @@ const update = async (req: Request, res: Response) => {
 
     const updatedOrder = await store.update(order);
     res.json(updatedOrder);
-  } catch (err: any) {
-    res.status(404).json(err.message);
+  } catch (error) {
+    res.status(404).json({ error: (error as Error).message });
   }
 };
 
@@ -57,9 +56,17 @@ const deleteOrder = async (req: Request, res: Response) => {
   try {
     const orderDeleted = await store.delete(req.params.id);
     res.json(orderDeleted);
-  } catch (err: any) {
-    res.status(400);
-    res.json(err.message);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
+  }
+};
+
+const deleteAddedProduct = async (req: Request, res: Response) => {
+  try {
+    const addedProductDeleted = await store.deleteAddProduct(req.params.id);
+    res.json(addedProductDeleted);
+  } catch (error) {
+    res.status(400).json({ error: (error as Error).message });
   }
 };
 
@@ -68,17 +75,14 @@ const addProduct = async (req: Request, res: Response) => {
     const orderId: string = req.params.id;
     const productId: string = req.body.productId;
     const quantity: number = parseInt(req.body.quantity);
-
     const newOrderProduct = await store.addProduct(
       quantity,
       productId,
       orderId
     );
     res.json({ newOrderProduct });
-  } catch (err) {
-    console.log(err);
-    res.status(401);
-    res.json(err);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
@@ -88,6 +92,7 @@ const orderRoutes = (app: express.Application) => {
   app.get('/orders/:id', show);
   app.put('/orders/:id', update);
   app.delete('/orders/:id', deleteOrder);
+  app.delete('/orders/addedProduct/:id', deleteAddedProduct);
   app.post('/orders/:id/products', addProduct);
 };
 

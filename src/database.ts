@@ -35,7 +35,7 @@ try {
   }
 
   // Attempt to connect to the database
-  client.connect((err, client) => {
+  client.connect((err) => {
     if (err) {
       console.error(`Error connecting to database: ${err}`);
     } else {

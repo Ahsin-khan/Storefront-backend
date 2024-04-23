@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error: Importing client for database connection
 import client from '../database';
 import bcrypt from 'bcrypt';
 
@@ -16,7 +16,7 @@ const saltRounds = process.env.SALT_ROUND || '10';
 export class UserStore {
   async index(): Promise<User[]> {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql = 'SELECT * FROM users';
 
@@ -32,7 +32,7 @@ export class UserStore {
 
   async create(u: User): Promise<User> {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql =
         'INSERT INTO users (firstName, lastName, userName, password) VALUES ($1, $2, $3, $4) RETURNING *';
@@ -58,7 +58,7 @@ export class UserStore {
 
   async show(id: number): Promise<User> {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql = 'SELECT * FROM users WHERE id=$1';
       const result = await conn.query(sql, [id]);
@@ -74,12 +74,12 @@ export class UserStore {
 
   async delete(id: string): Promise<User> {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql = 'DELETE FROM users WHERE id=($1)';
       await conn.query(sql, [id]);
 
-      const sql2 = 'SELECT * FROM users';
+      const sql2 = 'SELECT * FROM users ORDER BY id';
       const result = await conn.query(sql2);
 
       conn.release();
@@ -91,7 +91,7 @@ export class UserStore {
 
   async authenticate(username: string, password: string): Promise<User | null> {
     try {
-      // @ts-ignore
+      // @ts-expect-error: Establishing connection to the database
       const conn = await client.connect();
       const sql = 'SELECT password FROM users WHERE userName=$1';
       const result = await conn.query(sql, [username]);
